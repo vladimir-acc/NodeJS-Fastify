@@ -5,6 +5,7 @@ const vm = require('node:vm');
 const path = require('node:path');
 
 const dbBuilder = require('../lib/db.js');
+
 const common = require('../lib/common.js');
 
 const OPTIONS = {
@@ -13,12 +14,18 @@ const OPTIONS = {
 };
 
 const load = async (filePath, sandbox) => {
-  const src = await fsp.readFile(filePath, 'utf8');
-  const code = `'use strict';\n{\n${src}\n}`;
-  const script = new vm.Script(code, { ...OPTIONS, lineOffset: -2 });
-  const context = vm.createContext(Object.freeze({ ...sandbox }));
-  const exported = script.runInContext(context, OPTIONS);
-  return exported;
+  try {
+    const src = await fsp.readFile(filePath, 'utf8');
+    const code = `'use strict';\n{\n${src}\n}`;
+    const script = new vm.Script(code, { ...OPTIONS, lineOffset: -2 });
+    const context = vm.createContext(Object.freeze({ ...sandbox }));
+    const exported = script.runInContext(context, OPTIONS);
+    return exported;
+  } catch (err) {
+
+    console.error(err);
+  }
+
 };
 
 const loadDir = async (dir, sandbox) => {
@@ -29,6 +36,7 @@ const loadDir = async (dir, sandbox) => {
     const filePath = path.join(dir, fileName);
     const name = path.basename(fileName, '.js');
     container[name] = await load(filePath, sandbox);
+    // console.dir(container[name]);
   }
   return container;
 };
@@ -41,16 +49,18 @@ const loadApplication = async (appPath, logger) => {
 
   const apiPath = path.join(appPath, './api');
   const configPath = path.join(appPath, './config');
-
+  // console.dir(apiPath);
   const config = await loadDir(configPath, sandbox);
   sandbox.config = Object.freeze(config);
 
-  const db = dbBuilder(config.db);
+  const db = dbBuilder('../db/init.js');
+
   sandbox.db = Object.freeze(db);
-
+  // console.dir(sandbox.db);
   const api = await loadDir(apiPath, sandbox);
-  sandbox.api = Object.freeze(api);
 
+  sandbox.api = Object.freeze(api);
+  // console.dir(sandbox.api);
   return sandbox;
 };
 

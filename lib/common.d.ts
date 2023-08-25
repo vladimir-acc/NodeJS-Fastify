@@ -4,4 +4,5 @@ declare namespace common {
     password: string,
     serHash: string,
   ): Promise<boolean>;
+  function validateEmail(email: string): boolean;
 }

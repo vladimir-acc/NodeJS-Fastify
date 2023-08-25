@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db_osvita.db"
+}
+
+model camp {
+  id         Int          @id @default(autoincrement())
+  type       String
+  title      String?
+  link       String?
+  ico        String?
+  price      String?
+  camp_terms camp_terms[]
+}
+
+model camp_terms {
+  id       Int     @id @default(autoincrement())
+  subtitle String?
+  period   String?
+  other    String?
+  sortId   Int     @default(1)
+  campId   Int
+  camp     camp    @relation(fields: [campId], references: [id])
+}
+
+model scool {
+  id          Int           @id @default(autoincrement())
+  type        String
+  title       String?
+  link        String?
+  ico         String?
+  price       String?
+  assignId    Int
+  assign      assignment    @relation(fields: [assignId], references: [id])
+  scool_terms scool_terms[]
+}
+
+model scool_terms {
+  id       Int     @id @default(autoincrement())
+  subtitle String?
+  period   String?
+  other    String?
+  sortId   Int     @default(1)
+  scoolId  Int
+  scool    scool   @relation(fields: [scoolId], references: [id])
+}
+
+model assignment {
+  id    Int     @id @default(autoincrement())
+  title String?
+  scool scool[]
+}
+
+model users {
+  id       Int    @id @default(autoincrement())
+  login    String @unique
+  password String
+  email    String @unique
+}
+
+model blog {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @updatedAt
+  title     String
+  bref      String
+  href      String
+  src       String
+  alt       String?
+  content   String?
+  published Boolean  @default(true)
+  images    image[]
+  galery    galery[]
+  tagsId    Int      @default(1)
+  tags      tags     @relation(fields: [tagsId], references: [id])
+}
+
+model image {
+  id     Int     @id @default(autoincrement())
+  title  String?
+  href   String
+  blogId Int
+  images blog    @relation(fields: [blogId], references: [id])
+}
+
+model galery {
+  id       Int     @id @default(autoincrement())
+  title    String?
+  href     String
+  galeryId Int
+  galery   blog    @relation(fields: [galeryId], references: [id])
+}
+
+model tags {
+  id    Int     @id @default(autoincrement())
+  title String?
+  blog  blog[]
+}

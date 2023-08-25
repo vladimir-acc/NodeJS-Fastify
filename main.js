@@ -8,10 +8,12 @@ const { Logger, StreamForLogger } = require('./src/logger.js');
 const http = require('./src/http.js');
 const ws = require('./src/ws.js');
 const { loadApplication } = require('./src/loader.js');
+const routes = require('./lib/routes.js');
 
-const APPLICATION_PATH = path.join(process.cwd(), '../NodeJS-Application');
+
+const APPLICATION_PATH = path.join(process.cwd(), './app');
 const LOG_FOLDER_PATH = './log';
-
+// console.dir(APPLICATION_PATH);
 (async () => {
   const streamForLogger = new StreamForLogger(LOG_FOLDER_PATH);
   const server = fastify({
@@ -19,9 +21,9 @@ const LOG_FOLDER_PATH = './log';
   });
   const logger = new Logger(server.log);
   const app = await loadApplication(APPLICATION_PATH, logger);
-
-  http.init(server, app.api);
-  http.initStatic(server, APPLICATION_PATH);
-  ws.init(server, app.api);
-  http.start(server, { port: app.config.server.ports[0] });
+  http.init(server, routes, app.config.server);
+  // console.dir(app);
+  // http.initStatic(server, APPLICATION_PATH);
+  ws.init(server, routes);
+  http.start(server, { port: app.config.server.ports });
 })();

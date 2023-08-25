@@ -8,7 +8,11 @@
   "scripts": {
     "test": "npm run lint && tsc",
     "lint": "eslint . && prettier -c \"**/*.js\" \"**/*.ts\"",
+    "seed": "node db/seed.js",
     "fmt": "prettier --write \"**/*.js\" \"**/*.ts\""
+  },
+  "prisma": {
+    "seed": "node seed.js"
   },
   "engines": {
     "node": "16 || 18 || 19 || 20"
@@ -16,19 +20,20 @@
   "dependencies": {
     "@fastify/static": "^6.10.2",
     "@fastify/websocket": "^8.2.0",
+    "@prisma/client": "^5.1.1",
     "fastify": "^4.20.0",
-    "pg": "^8.11.1",
+    "sqlite3": "^5.1.6",
     "ws": "^8.12.0"
   },
   "devDependencies": {
     "@types/node": "^20.4.4",
-    "@types/pg": "^8.10.2",
     "@types/ws": "^8.5.5",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.0",
+    "prisma": "^5.1.1",
     "typescript": "^5.1.6"
   }
 }
