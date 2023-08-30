@@ -10,7 +10,6 @@ const ws = require('./src/ws.js');
 const { loadApplication } = require('./src/loader.js');
 const routes = require('./lib/routes.js');
 
-
 const APPLICATION_PATH = path.join(process.cwd(), './app');
 const LOG_FOLDER_PATH = './log';
 // console.dir(APPLICATION_PATH);

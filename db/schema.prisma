@@ -64,7 +64,7 @@ model users {
 
 model blog {
   id        Int      @id @default(autoincrement())
-  date      DateTime @updatedAt
+  date      DateTime @default(now()) @updatedAt
   title     String
   bref      String
   href      String
@@ -98,4 +98,43 @@ model tags {
   id    Int     @id @default(autoincrement())
   title String?
   blog  blog[]
+}
+
+model types_of_courses {
+  id           Int      @id @default(autoincrement())
+  title        String?
+  course_terms course[]
+}
+
+model course {
+  id           Int              @id @default(autoincrement())
+  title        String?
+  typeId       Int              @default(1)
+  type         types_of_courses @relation(fields: [typeId], references: [id])
+  course_terms course_terms[]
+}
+
+model course_terms {
+  id       Int     @id @default(autoincrement())
+  duration String? @default("З’ясовуй у адміна")
+  period   String? @default("З’ясовуй у адміна")
+  cost     String? @default("З’ясовуй у адміна")
+  link     String?
+  courseId Int
+  course   course  @relation(fields: [courseId], references: [id])
+}
+
+model contact {
+  id      Int     @id @default(autoincrement())
+  title   String?
+  address String?
+  phone   String?
+  email   String?
+  action  String? @default("Замовити дзвінок")
+}
+
+model cities {
+  id   Int     @id @default(autoincrement())
+  name String?
+  src  String? @default("https://maps.google.com/maps?width=1180&amp;height=475&amp;hl=uk&amp;q=insha osvita kremenchug&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed")
 }

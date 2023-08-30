@@ -2,17 +2,56 @@
 'use strict';
 
 const { join } = require('node:path');
+
 const sort = require(join(process.cwd(), 'lib', 'sort.js'));
 const db = require(join(process.cwd(), 'db', 'init.js'));
 
 
-const camp = () => ({
-  async read(id, table) {
+const prepare = () => ({
+  async show(id) {
 
-    const sql = `SELECT ${table}.id, type, title, link,ico, price, camp_terms.campId,
-      camp_terms.subtitle AS ch_subtitle, camp_terms.period AS ch_period, camp_terms.other AS ch_other,
-      camp_terms.sortId AS ch_sortId FROM ${table} LEFT JOIN camp_terms
-      ON camp_terms.campId = ${table}.id`;
+    const sql = `SELECT scool.id, type, title, link, ico, price, assignId, scool_terms.scoolId,
+      scool_terms.subtitle AS subtitle, scool_terms.period AS period, scool_terms.other AS other,
+      scool_terms.sortId AS sortId FROM scool LEFT JOIN scool_terms
+      ON scool_terms.scoolId = scool.id WHERE assignId = 5`;
+    if (!id) {
+      return new Promise((resolve, reject) => {
+
+        db.all(sql, async (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+
+      });
+    } else {
+
+      return new Promise((resolve, reject) => {
+
+        db.get(`${sql} AND scool.id = $1`, [id], async (err, result) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            if (result) {
+              resolve(result);
+            } else {
+              resolve({ message: 'Not Found' });
+            }
+            reject(err);
+          }
+        });
+      });
+    }
+  },
+  async read(id) {
+
+    const sql = `SELECT scool.id, type, title, link, ico, price, assignId, scool_terms.scoolId,
+      scool_terms.subtitle AS ch_subtitle, scool_terms.period AS ch_period, scool_terms.other AS ch_other,
+      scool_terms.sortId AS ch_sortId FROM scool LEFT JOIN scool_terms
+      ON scool_terms.scoolId = scool.id WHERE assignId = 5`;
     if (!id) {
       return new Promise((resolve, reject) => {
 
@@ -27,7 +66,7 @@ const camp = () => ({
               link: item.link, ico: item.ico, price: item.price
             }) - 1;
 
-            if (item.campId) {
+            if (item.scoolId) {
 
               parent[i].terms = parent[i].terms || [];
               parent[i].terms.push({
@@ -51,7 +90,7 @@ const camp = () => ({
 
       return new Promise((resolve, reject) => {
 
-        db.get(`${sql} WHERE ${table}.id = $1`, [id], async (err, result) => {
+        db.get(`${sql} AND scool.id = $1`, [id], async (err, result) => {
           if (err) {
             console.error(err);
             reject(err);
@@ -67,7 +106,7 @@ const camp = () => ({
       });
     }
   },
-  async create({ ...record }, table) {
+  async create({ ...record }) {
     const keys = Object.keys(record);
     const nums = new Array(keys.length);
     const data = new Array(keys.length);
@@ -78,7 +117,7 @@ const camp = () => ({
     }
     const fields = '"' + keys.join('", "') + '"';
     const params = nums.join(', ');
-    const sql = `INSERT INTO "${table}" (${fields}) VALUES (${params})`;
+    const sql = `INSERT INTO scool (${fields}) VALUES (${params})`;
     return new Promise((resolve, reject) => {
       db.run(sql, data, (err, result) => {
         if (err) {
@@ -92,7 +131,7 @@ const camp = () => ({
     });
   },
 
-  async update(id, { ...record }, table) {
+  async update(id, { ...record }) {
     const keys = Object.keys(record);
     const updates = new Array(keys.length);
     const data = new Array(keys.length);
@@ -102,7 +141,7 @@ const camp = () => ({
       updates[i] = `${key} = $${++i}`;
     }
     const delta = updates.join(', ');
-    const sql = `UPDATE ${table} SET ${delta} WHERE id = $${++i}`;
+    const sql = `UPDATE scool SET ${delta} WHERE id = $${++i}`;
     data.push(id);
     return new Promise((resolve, reject) => {
       db.run(sql, data, (err, result) => {
@@ -117,8 +156,8 @@ const camp = () => ({
     });
   },
 
-  async delete(id, table) {
-    const sql = `DELETE FROM ${table} WHERE id = $1`;
+  async delete(id) {
+    const sql = 'DELETE FROM scool WHERE id = $1';
     return new Promise((resolve, reject) => {
       db.run(sql, [id], (err, result) => {
         if (err) {
@@ -131,4 +170,4 @@ const camp = () => ({
     });
   },
 });
-module.exports = camp;
+module.exports = prepare;
