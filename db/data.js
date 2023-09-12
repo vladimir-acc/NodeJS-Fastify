@@ -6,15 +6,19 @@
 module.exports = {
   users: [{
     login: 'admin',
-    email: 'admin@exaple.com',
-    password: '6K4cgjJ7BH4Ow8H9p9n5Ow==:5rBhcRibMmQ6V8EU7q+3WgGzuF96qu9H9hHbUgpbxpI6RxN9vK8nFEMGIjZtPXtKiJR5w89JaujE2jsyrh6YGQ=='
-    // password: admin@ino-svita
+    role: 'ADMIN',
+    email: 'admin@inshaosvita.ua',
+    password: '$scrypt$N=32768,r=8,p=1,maxmem=67108864$oveYP5M2RkaHC39R/RhyqmVzhqPbfAGPgmNSYT+H/OM$S3rjVO+wOEmoGQWKlAHh+SvsxbcW/k1kMA1kamVUCU4pPQ+jy4AwxDbUN30R/1SlSyIrClF7NsMQI7xT4S6KKA',
+    actived: true
+    // password: admin@inshaosvita.ua
   },
   {
     login: 'user',
-    email: 'user@exaple.com',
-    password: 'dpHw0OUNBz76nuqrXZbeYQ==:wpvUVgi8Yp9rJ0yZyBWecaWP2EL/ahpxZY74KOVfhAYbAZSq6mWqjsQwtCvIPcSKZqUVpVb13JcSciB2fA+6Tg=='
-    // password: user@ino-svita
+    role: 'USER',
+    email: 'user@inshaosvita.ua',
+    actived: true,
+    password: '$scrypt$N=32768,r=8,p=1,maxmem=67108864$yVc7yQCnWrJkF0NMOHXpAN9GIDCQVRA/KdbKjpWzSeg$sUQkfpLNlaet8zn87pvS/JINEZVXHgRDxIFLjMZzUw/5nKc2oo0ei2089fVK1IUBxFAZ3httS+P3dQpz9UWL5w'
+    // password: user@inshaosvita.ua
   }
   ],
 

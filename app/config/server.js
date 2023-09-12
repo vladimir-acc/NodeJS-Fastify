@@ -29,6 +29,9 @@
   },
   cors: {
     origin: '*',
+    methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   },
   client: {
     perPage: 6,

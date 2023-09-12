@@ -56,10 +56,22 @@ model assignment {
 }
 
 model users {
-  id       Int    @id @default(autoincrement())
-  login    String @unique
+  id       Int     @id @default(autoincrement())
+  login    String  @unique
   password String
-  email    String @unique
+  email    String  @unique
+  actived  Boolean @default(true)
+  role     String  @default("USER")
+  token    token[]
+}
+
+model token {
+  id           Int       @id @default(autoincrement())
+  refreshToken String
+  created      DateTime  @default(now())
+  updated      DateTime?
+  userId       Int
+  user         users?    @relation(fields: [userId], references: [id])
 }
 
 model blog {

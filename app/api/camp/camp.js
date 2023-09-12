@@ -67,6 +67,7 @@ const camp = () => ({
       });
     }
   },
+
   async create({ ...record }, table) {
     const keys = Object.keys(record);
     const nums = new Array(keys.length);
