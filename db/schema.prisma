@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./db_osvita.db"
+  url      = env("DB_URL_PRISMA")
 }
 
 model camp {

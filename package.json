@@ -23,6 +23,7 @@
     "@fastify/static": "^6.10.2",
     "@fastify/websocket": "^8.2.0",
     "@prisma/client": "^5.2.0",
+    "dotenv": "^16.3.1",
     "fastify": "^4.20.0",
     "jsonwebtoken": "^9.0.2",
     "sqlite3": "^5.1.6",

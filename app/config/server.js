@@ -28,7 +28,7 @@
     timeout: 5000,
   },
   cors: {
-    origin: '*',
+    origin: ['http://localhost:3006', 'http://localhost:3005', 'http://192.168.1.10:3006'],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
