@@ -28,7 +28,7 @@
     timeout: 5000,
   },
   cors: {
-    origin: ['http://localhost:3006', 'http://localhost:3005', 'http://admin_inosvita.devweb.pp.ua', 'http://inosvita_api.devweb.pp.ua/'],
+    origin: ['http://localhost:3006', 'http://localhost:3005', 'http://admin_inosvita.devweb.pp.ua', 'http://inosvita_api.devweb.pp.ua'],
     methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],
