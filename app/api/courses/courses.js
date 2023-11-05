@@ -5,16 +5,12 @@ const { join } = require('node:path');
 const db = require(join(process.cwd(), 'db', 'init.js'));
 
 
-const course = () => ({
+const courses = () => ({
   async read(id) {
-
-    const sql = `SELECT course.id AS id, types_of_courses.title AS type_title,course.title AS title, 
-      course_terms.duration AS duration, course_terms.period AS period, 
-      course_terms.cost AS price, course_terms.link AS link, course.typeId AS typeId
-      FROM course LEFT JOIN course_terms ON course_terms.courseId = course.id, 
-      types_of_courses ON course.typeId = types_of_courses.id`;
+    const sql = 'SELECT * FROM course';
     if (!id) {
       return new Promise((resolve, reject) => {
+
         db.all(sql, (err, res) => {
           if (err) {
             reject(err);
@@ -25,9 +21,9 @@ const course = () => ({
         });
       });
     } else {
-      const q = `${sql} WHERE course.id = $1`;
       return new Promise((resolve, reject) => {
-        db.get(q, [id], (err, res) => {
+        db.all(`${sql}  WHERE typeId = $1`, [id], (err, res) => {
+          console.log();
           if (err) {
             reject(err);
           } else {
@@ -102,4 +98,4 @@ const course = () => ({
     });
   },
 });
-module.exports = course;
+module.exports = courses;
